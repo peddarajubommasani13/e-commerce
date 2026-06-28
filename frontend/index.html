@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAISON — Luxury Fashion Store</title>
+  <meta name="description" content="Discover premium fashion. Shop the latest collections of women's and men's clothing, accessories, and more at MAISON." />
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body class="page-wrapper">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="pages/shop.html" class="nav-link">Shop</a>
+        <a href="pages/shop.html?categoryId=1" class="nav-link">Women</a>
+        <a href="pages/shop.html?categoryId=2" class="nav-link">Men</a>
+        <a href="pages/shop.html?categoryId=3" class="nav-link">Accessories</a>
+        <a href="pages/shop.html?categoryId=4" class="nav-link">Sale</a>
+      </div>
+
+      <div class="navbar-actions">
+        <button class="nav-icon-btn" onclick="window.location.href='pages/shop.html'" title="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <button class="nav-icon-btn" id="nav-cart-btn" onclick="window.location.href='pages/cart.html'" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="nav-badge" id="cart-count-badge" style="display:none">0</span>
+        </button>
+
+        <!-- Auth buttons (shown when logged out) -->
+        <a href="pages/login.html" class="btn btn-ghost btn-sm" id="nav-login-link">Sign In</a>
+        <a href="pages/register.html" class="btn btn-primary btn-sm" id="nav-register-link">Register</a>
+
+        <!-- User menu (shown when logged in) -->
+        <div class="nav-user-menu" id="nav-user-menu-wrap">
+          <button class="nav-user-btn" id="nav-user-btn">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-user-name">Account</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown" id="nav-user-dropdown">
+            <a href="pages/account.html" class="nav-dropdown-item">
+              <span>👤</span> My Account
+            </a>
+            <a href="pages/account.html" class="nav-dropdown-item">
+              <span>📦</span> My Orders
+            </a>
+            <a href="pages/admin.html" class="nav-dropdown-item" id="nav-admin-link">
+              <span>⚙️</span> Admin Dashboard
+            </a>
+            <div class="nav-dropdown-divider"></div>
+            <button class="nav-dropdown-item danger" id="nav-logout-btn">
+              <span>🚪</span> Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hamburger -->
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-mobile-overlay" id="nav-mobile-overlay"></div>
+
+  <!-- Mobile drawer -->
+  <nav class="nav-mobile-drawer" id="nav-mobile-drawer">
+    <div class="nav-mobile-drawer-header">
+      <a href="index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <button id="nav-drawer-close" style="font-size:1.5rem;background:none;border:none;cursor:pointer;">×</button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="index.html" class="nav-mobile-link">🏠 Home</a>
+      <a href="pages/shop.html" class="nav-mobile-link">🛍 Shop All</a>
+      <a href="pages/shop.html?categoryId=1" class="nav-mobile-link">👗 Women</a>
+      <a href="pages/shop.html?categoryId=2" class="nav-mobile-link">👔 Men</a>
+      <a href="pages/shop.html?categoryId=3" class="nav-mobile-link">👜 Accessories</a>
+      <a href="pages/shop.html?categoryId=4" class="nav-mobile-link">🏷 Sale</a>
+      <hr style="border-color:var(--color-border);margin:12px 0">
+      <a href="pages/cart.html" class="nav-mobile-link">🛒 Cart</a>
+      <a href="pages/account.html" class="nav-mobile-link">📦 My Orders</a>
+      <a href="pages/login.html" class="nav-mobile-link" id="nav-mobile-login">🔑 Sign In</a>
+      <a href="pages/admin.html" class="nav-mobile-link" id="nav-mobile-admin" style="display:none">⚙️ Admin</a>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1800&q=80"
+             alt="Fashion hero" class="hero-img" loading="eager" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content container">
+        <div class="hero-text">
+          <span class="hero-tag">New Season 2026</span>
+          <h1 class="hero-title">Wear Your<br><em>Story.</em></h1>
+          <p class="hero-subtitle">Curated luxury fashion for the modern individual. Premium fabrics, timeless design.</p>
+          <div class="hero-actions">
+            <a href="pages/shop.html" class="btn btn-accent btn-lg">Shop Collection</a>
+            <a href="pages/shop.html?categoryId=4" class="btn btn-outline btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)">View Sale</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>500+</strong>
+            <span>Products</span>
+          </div>
+          <div class="hero-stat">
+            <strong>4.8★</strong>
+            <span>Rating</span>
+          </div>
+          <div class="hero-stat">
+            <strong>Free</strong>
+            <span>Returns</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Tiles -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Shop by Category</span>
+          <h2 class="section-title">Browse Collections</h2>
+        </div>
+        <div class="category-grid" id="category-grid">
+          <!-- Loaded from API -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">New Arrivals</span>
+          <h2 class="section-title">Featured Pieces</h2>
+          <p class="section-subtitle">Hand-picked selection of our most coveted styles this season.</p>
+        </div>
+        <div class="product-grid" id="featured-grid">
+          <!-- Skeleton while loading -->
+        </div>
+        <div class="text-center" style="margin-top:var(--space-10)">
+          <a href="pages/shop.html" class="btn btn-outline btn-lg">View All Products</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Promise -->
+    <section class="promise-section">
+      <div class="container">
+        <div class="promise-grid">
+          <div class="promise-item">
+            <div class="promise-icon">🚚</div>
+            <h3>Free Delivery</h3>
+            <p>On all orders over $100</p>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">↩️</div>
+            <h3>Easy Returns</h3>
+            <p>30-day hassle-free returns</p>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🔒</div>
+            <h3>Secure Payment</h3>
+            <p>Your data is always safe</p>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">💬</div>
+            <h3>24/7 Support</h3>
+            <p>We're here when you need us</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sale Banner -->
+    <section class="sale-banner">
+      <div class="container">
+        <div class="sale-inner">
+          <div class="sale-text">
+            <span class="sale-tag">Limited Time</span>
+            <h2 class="sale-title">Up to 50% Off<br>Selected Styles</h2>
+            <p>Our biggest sale of the season. Exclusive pieces at incredible prices.</p>
+            <a href="pages/shop.html?categoryId=4" class="btn btn-accent btn-lg">Shop Sale</a>
+          </div>
+          <div class="sale-image">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80" alt="Sale collection" loading="lazy"/>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-name">MAISON</div>
+        <p class="footer-brand-desc">Luxury fashion for the modern individual. We believe great style is about finding what makes you feel uniquely yourself.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-btn">f</a>
+          <a href="#" class="footer-social-btn">in</a>
+          <a href="#" class="footer-social-btn">tw</a>
+          <a href="#" class="footer-social-btn">ig</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <div class="footer-links">
+          <a href="pages/shop.html?categoryId=1" class="footer-link">Women</a>
+          <a href="pages/shop.html?categoryId=2" class="footer-link">Men</a>
+          <a href="pages/shop.html?categoryId=3" class="footer-link">Accessories</a>
+          <a href="pages/shop.html?categoryId=4" class="footer-link">Sale</a>
+          <a href="pages/shop.html" class="footer-link">New Arrivals</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Account</div>
+        <div class="footer-links">
+          <a href="pages/login.html" class="footer-link">Sign In</a>
+          <a href="pages/register.html" class="footer-link">Create Account</a>
+          <a href="pages/account.html" class="footer-link">My Orders</a>
+          <a href="pages/cart.html" class="footer-link">Cart</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Help</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Sizing Guide</a>
+          <a href="#" class="footer-link">Shipping Info</a>
+          <a href="#" class="footer-link">Returns Policy</a>
+          <a href="#" class="footer-link">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year">2026</span> MAISON. All rights reserved.</span>
+      <div class="footer-payment-icons">
+        <span class="payment-icon">VISA</span>
+        <span class="payment-icon">MC</span>
+        <span class="payment-icon">AMEX</span>
+        <span class="payment-icon">PayPal</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — MAISON</title>
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <a href="shop.html" class="btn btn-ghost btn-sm">Shop</a>
+    </div>
+  </nav>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="font-heading auth-title">Welcome Back</h1>
+        <p class="text-muted text-sm">Please sign in to access your account details.</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-input" required placeholder="jane@example.com">
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-5);">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-input" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="login-submit-btn">Sign In</button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Register Here</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="margin-top: auto;">
+    <div class="footer-bottom">
+      <span>© 2026 MAISON. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      redirectIfLoggedIn();
+    });
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      const btn = document.getElementById('login-submit-btn');
+      setLoading(btn, true);
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const res = await api.login({ email, password });
+        setAuthToken(res.token);
+        setAuthUser({
+          id: res.id,
+          name: res.name,
+          email: res.email,
+          role: res.role
+        });
+
+        toastSuccess(`Welcome back, ${res.name}!`, 'Success ✓');
+
+        // Redirect back or home
+        const redirect = getUrlParam('redirect') || '../index.html';
+        setTimeout(() => {
+          window.location.href = decodeURIComponent(redirect);
+        }, 1200);
+
+      } catch (err) {
+        toastError(err.message || 'Login failed. Invalid credentials.');
+        setLoading(btn, false);
+      }
+    }
+  </script>
+</body>
+</html>

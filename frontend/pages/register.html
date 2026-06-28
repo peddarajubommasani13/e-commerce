@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account — MAISON</title>
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <a href="shop.html" class="btn btn-ghost btn-sm">Shop</a>
+    </div>
+  </nav>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="font-heading auth-title">Create Account</h1>
+        <p class="text-muted text-sm">Join MAISON to track orders, save items and checkout faster.</p>
+      </div>
+
+      <form id="register-form" onsubmit="handleRegister(event)">
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label class="form-label" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" required placeholder="Jane Doe" minlength="2" maxlength="100">
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" required placeholder="jane@example.com">
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-5);">
+          <label class="form-label" for="reg-password">Password</label>
+          <input type="password" id="reg-password" class="form-input" required placeholder="Min 8 characters" minlength="8">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="reg-submit-btn">Register</button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign In</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="margin-top: auto;">
+    <div class="footer-bottom">
+      <span>© 2026 MAISON. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      redirectIfLoggedIn();
+    });
+
+    async function handleRegister(event) {
+      event.preventDefault();
+      const btn = document.getElementById('reg-submit-btn');
+      setLoading(btn, true);
+
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+
+      try {
+        const res = await api.register({ name, email, password });
+        setAuthToken(res.token);
+        setAuthUser({
+          id: res.id,
+          name: res.name,
+          email: res.email,
+          role: res.role
+        });
+
+        toastSuccess(`Registration successful! Welcome, ${res.name}.`, 'Success ✓');
+
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 1200);
+
+      } catch (err) {
+        toastError(err.message || 'Registration failed. Try a different email.');
+        setLoading(btn, false);
+      }
+    }
+  </script>
+</body>
+</html>

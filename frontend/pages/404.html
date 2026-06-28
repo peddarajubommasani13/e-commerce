@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — MAISON</title>
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <style>
+    .error-page {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-12) var(--space-6);
+    }
+
+    .error-code {
+      font-family: var(--font-heading);
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 700;
+      color: var(--color-surface-dark);
+      line-height: 1;
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.04em;
+    }
+
+    .error-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      color: var(--color-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .error-message {
+      color: var(--color-text-muted);
+      max-width: 420px;
+      margin: 0 auto var(--space-8);
+      font-size: var(--text-md);
+      line-height: 1.65;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <div class="navbar-actions">
+        <a href="shop.html" class="btn btn-ghost btn-sm">Shop</a>
+        <a href="../index.html" class="btn btn-primary btn-sm">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="error-page">
+    <div>
+      <div class="error-code">404</div>
+      <h1 class="error-title">Page Not Found</h1>
+      <p class="error-message">
+        The page you're looking for seems to have wandered off. 
+        Perhaps it's gone shopping. Let's get you back on track.
+      </p>
+      <div class="error-actions">
+        <a href="../index.html" class="btn btn-primary btn-lg">Go Home</a>
+        <a href="shop.html" class="btn btn-outline btn-lg">Browse Shop</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span>© 2026 MAISON. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+</body>
+</html>

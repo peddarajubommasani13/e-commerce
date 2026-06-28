@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Help Centre — MAISON</title>
+  <meta name="description" content="Find information about sizing, shipping, returns, and contact our customer care team." />
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <style>
+    .help-wrapper {
+      padding: var(--space-12) 0 var(--space-20);
+    }
+
+    .help-header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+
+    .help-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      color: var(--color-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .help-subtitle {
+      color: var(--color-text-muted);
+      font-size: var(--text-md);
+    }
+
+    .help-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: var(--space-10);
+      align-items: start;
+    }
+
+    /* Tabs Sidebar */
+    .help-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      background: var(--color-surface-alt);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+    }
+
+    .help-tab-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-text-muted);
+      border: none;
+      background: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .help-tab-btn:hover {
+      color: var(--color-primary);
+      background: rgba(10, 15, 44, 0.04);
+    }
+
+    .help-tab-btn.active {
+      color: var(--color-surface);
+      background: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* Content Area */
+    .help-content-panel {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      padding: var(--space-8);
+      min-height: 400px;
+    }
+
+    .help-panel {
+      display: none;
+    }
+
+    .help-panel.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      color: var(--color-primary);
+      margin-bottom: var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    /* Sizing Table Styles */
+    .size-chart-group {
+      margin-bottom: var(--space-8);
+    }
+
+    .size-chart-title {
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: var(--space-3);
+      text-transform: uppercase;
+      font-size: var(--text-xs);
+      letter-spacing: 0.05em;
+    }
+
+    .size-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-4);
+      font-size: var(--text-sm);
+    }
+
+    .size-table th,
+    .size-table td {
+      padding: var(--space-3);
+      border: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    .size-table th {
+      background: var(--color-surface-alt);
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    /* Shipping & Returns list styles */
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .info-item h3 {
+      font-size: var(--text-md);
+      color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .info-item p {
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Contact Form Styles */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .contact-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .contact-method {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+
+    .contact-method-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .contact-method-details h4 {
+      font-size: var(--text-sm);
+      color: var(--color-primary);
+      margin-bottom: 2px;
+    }
+
+    .contact-method-details p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .help-container {
+        grid-template-columns: 1fr;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <!-- Navbar loaded dynamically by nav.js -->
+  </nav>
+
+  <main class="help-wrapper">
+    <div class="container">
+      
+      <div class="help-header">
+        <h1 class="help-title">How can we help?</h1>
+        <p class="help-subtitle">Find sizing, shipping, returns policy, and customer care details.</p>
+      </div>
+
+      <div class="help-container">
+        <!-- Sidebar Navigation -->
+        <aside class="help-tabs">
+          <button class="help-tab-btn active" data-target="sizing">Sizing Guide</button>
+          <button class="help-tab-btn" data-target="shipping">Shipping Info</button>
+          <button class="help-tab-btn" data-target="returns">Returns & Exchanges</button>
+          <button class="help-tab-btn" data-target="contact">Contact Us</button>
+        </aside>
+
+        <!-- Content Panel -->
+        <div class="help-content-panel">
+          
+          <!-- SIZING GUIDE PANEL -->
+          <section class="help-panel active" id="panel-sizing">
+            <h2 class="panel-title">Sizing Guide</h2>
+            
+            <div class="size-chart-group">
+              <h3 class="size-chart-title">Women's Apparel (Inches)</h3>
+              <table class="size-table">
+                <thead>
+                  <tr>
+                    <th>Size</th>
+                    <th>Bust</th>
+                    <th>Waist</th>
+                    <th>Hips</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>XS (0-2)</td>
+                    <td>31.5 - 32.5</td>
+                    <td>24 - 25</td>
+                    <td>34 - 35</td>
+                  </tr>
+                  <tr>
+                    <td>S (4-6)</td>
+                    <td>33.5 - 34.5</td>
+                    <td>26 - 27</td>
+                    <td>36 - 37</td>
+                  </tr>
+                  <tr>
+                    <td>M (8-10)</td>
+                    <td>35.5 - 37.5</td>
+                    <td>28 - 29</td>
+                    <td>38 - 40</td>
+                  </tr>
+                  <tr>
+                    <td>L (12-14)</td>
+                    <td>39.0 - 40.5</td>
+                    <td>30.5 - 32</td>
+                    <td>41.5 - 43</td>
+                  </tr>
+                  <tr>
+                    <td>XL (16)</td>
+                    <td>42.0</td>
+                    <td>34.0</td>
+                    <td>45.0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="size-chart-group">
+              <h3 class="size-chart-title">Men's Apparel (Inches)</h3>
+              <table class="size-table">
+                <thead>
+                  <tr>
+                    <th>Size</th>
+                    <th>Chest</th>
+                    <th>Waist</th>
+                    <th>Neck</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>S</td>
+                    <td>35 - 37</td>
+                    <td>29 - 31</td>
+                    <td>14 - 14.5</td>
+                  </tr>
+                  <tr>
+                    <td>M</td>
+                    <td>38 - 40</td>
+                    <td>32 - 34</td>
+                    <td>15 - 15.5</td>
+                  </tr>
+                  <tr>
+                    <td>L</td>
+                    <td>41 - 43</td>
+                    <td>35 - 37</td>
+                    <td>16 - 16.5</td>
+                  </tr>
+                  <tr>
+                    <td>XL</td>
+                    <td>44 - 46</td>
+                    <td>38 - 40</td>
+                    <td>17 - 17.5</td>
+                  </tr>
+                  <tr>
+                    <td>XXL</td>
+                    <td>47 - 49</td>
+                    <td>41 - 43</td>
+                    <td>18 - 18.5</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- SHIPPING INFO PANEL -->
+          <section class="help-panel" id="panel-shipping">
+            <h2 class="panel-title">Shipping Information</h2>
+            <div class="info-list">
+              <div class="info-item">
+                <h3>Domestic Shipping (UK & EU)</h3>
+                <p>We offer complimentary Standard Delivery on all orders above €150. For orders below €150, a flat rate of €10 applies. Delivery typically takes 3-5 business days. Express Delivery is available for €25, delivering in 1-2 business days.</p>
+              </div>
+              <div class="info-item">
+                <h3>International Shipping</h3>
+                <p>We ship worldwide. International shipping rates are calculated at checkout depending on destination and weight. Delivery times vary from 5 to 10 business days. Custom duties and taxes are paid at checkout where applicable.</p>
+              </div>
+              <div class="info-item">
+                <h3>Order Tracking</h3>
+                <p>Once your order has been dispatched, you will receive an email containing your tracking number and a link to trace your shipment. You can also view tracking details directly inside your Account Dashboard under "My Orders".</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- RETURNS POLICY PANEL -->
+          <section class="help-panel" id="panel-returns">
+            <h2 class="panel-title">Returns & Exchanges Policy</h2>
+            <div class="info-list">
+              <div class="info-item">
+                <h3>14-Day Return Window</h3>
+                <p>We accept returns of unworn, unwashed, and undamaged items with all original tags attached within 14 days of receiving your order. Please note that sale items marked as "Final Sale" cannot be returned or exchanged.</p>
+              </div>
+              <div class="info-item">
+                <h3>How to Initiate a Return</h3>
+                <p>To request a return, please log in to your account, navigate to "My Orders", select the order you wish to return, and click "Request Return". A prepaid shipping label will be generated for you. A return fee of €5 will be deducted from your refund amount.</p>
+              </div>
+              <div class="info-item">
+                <h3>Exchanges</h3>
+                <p>If you need a different size or color, please initiate a return for the original item and place a new order online. This ensures the item is secured and shipped to you as quickly as possible.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- CONTACT US PANEL -->
+          <section class="help-panel" id="panel-contact">
+            <h2 class="panel-title">Contact Customer Care</h2>
+            <div class="contact-grid">
+              
+              <!-- Contact Form -->
+              <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+                <div class="form-group">
+                  <label class="form-label" for="contact-name">Name</label>
+                  <input type="text" class="form-input" id="contact-name" required placeholder="Your full name" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-email">Email Address</label>
+                  <input type="email" class="form-input" id="contact-email" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-subject">Subject</label>
+                  <select class="form-select" id="contact-subject" required>
+                    <option value="">Select a topic...</option>
+                    <option value="order">Order Inquiry</option>
+                    <option value="return">Returns & Exchanges</option>
+                    <option value="sizing">Sizing & Fit</option>
+                    <option value="other">Other Inquiry</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-message">Message</label>
+                  <textarea class="form-input" id="contact-message" rows="5" required placeholder="How can we help you today?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" id="contact-submit-btn">Send Message</button>
+              </form>
+
+              <!-- Contact Info Blocks -->
+              <div class="contact-info-block">
+                <div class="contact-method">
+                  <div class="contact-method-icon">✉</div>
+                  <div class="contact-method-details">
+                    <h4>Email Us</h4>
+                    <p>care@maison.com</p>
+                    <p>We aim to respond to all inquiries within 24 hours.</p>
+                  </div>
+                </div>
+                <div class="contact-method">
+                  <div class="contact-method-icon">☎</div>
+                  <div class="contact-method-details">
+                    <h4>Call Us</h4>
+                    <p>+44 20 7946 0958</p>
+                    <p>Monday – Friday: 9:00 AM – 6:00 PM GMT</p>
+                  </div>
+                </div>
+                <div class="contact-method">
+                  <div class="contact-method-icon">📍</div>
+                  <div class="contact-method-details">
+                    <h4>Headquarters</h4>
+                    <p>MAISON Fashion Group Ltd.</p>
+                    <p>18 Savile Row, Mayfair, London, W1S 3PW</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <!-- Footer loaded dynamically by nav.js -->
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+  <script>
+    // Tab switching logic
+    document.querySelectorAll('.help-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Toggle active class on buttons
+        document.querySelectorAll('.help-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Toggle active class on panels
+        document.querySelectorAll('.help-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById(`panel-${btn.dataset.target}`).classList.add('active');
+
+        // Update URL hash
+        window.location.hash = btn.dataset.target;
+      });
+    });
+
+    // Load tab from URL hash if present
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const targetBtn = document.querySelector(`.help-tab-btn[data-target="${hash}"]`);
+      if (targetBtn) targetBtn.click();
+    }
+
+    // Handle Mock Contact Form Submission
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contact-submit-btn');
+      setLoading(btn, true);
+
+      setTimeout(() => {
+        setLoading(btn, false);
+        toastSuccess('Your message has been sent successfully. We will get back to you shortly!', 'Message Sent');
+        document.getElementById('contact-form').reset();
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

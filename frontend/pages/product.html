@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details — MAISON</title>
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/product.css" />
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <div class="navbar-links">
+        <a href="../index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link active">Shop</a>
+        <a href="shop.html?categoryId=1" class="nav-link">Women</a>
+        <a href="shop.html?categoryId=2" class="nav-link">Men</a>
+        <a href="shop.html?categoryId=3" class="nav-link">Accessories</a>
+        <a href="shop.html?categoryId=4" class="nav-link">Sale</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="nav-icon-btn" onclick="window.location.href='cart.html'" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="nav-badge" id="cart-count-badge" style="display:none">0</span>
+        </button>
+        <a href="login.html" class="btn btn-ghost btn-sm" id="nav-login-link">Sign In</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-link">Register</a>
+        <div class="nav-user-menu">
+          <button class="nav-user-btn" id="nav-user-btn">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-user-name">Account</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown" id="nav-user-dropdown">
+            <a href="account.html" class="nav-dropdown-item"><span>👤</span> My Account</a>
+            <a href="account.html" class="nav-dropdown-item"><span>📦</span> My Orders</a>
+            <a href="admin.html" class="nav-dropdown-item" id="nav-admin-link"><span>⚙️</span> Admin</a>
+            <div class="nav-dropdown-divider"></div>
+            <button class="nav-dropdown-item danger" id="nav-logout-btn"><span>🚪</span> Sign Out</button>
+          </div>
+        </div>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container product-detail-container">
+    <div id="product-detail-loader" class="text-center" style="padding: 100px 0;">
+      <span class="spinner"></span>
+    </div>
+
+    <div id="product-detail-content" class="product-detail-grid" style="display: none;">
+      <!-- Product Images Galery -->
+      <div class="product-gallery">
+        <div class="main-image-wrap">
+          <img id="main-product-img" src="" alt="Main Product Image">
+        </div>
+        <div class="thumbnail-list" id="thumbnail-list">
+          <!-- Thumbnail list populated by JS -->
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <div class="product-info-category" id="product-category">Category</div>
+        <h1 class="product-info-title" id="product-name">Product Name</h1>
+        
+        <div class="product-info-rating-row">
+          <div id="product-stars"></div>
+          <span class="text-muted" id="product-review-count">(0 reviews)</span>
+        </div>
+
+        <div class="price-wrap" id="product-price-container" style="font-size: var(--text-2xl); margin: var(--space-4) 0;">
+          <!-- Price rendered by JS -->
+        </div>
+
+        <p class="product-info-description" id="product-description">
+          Product description goes here.
+        </p>
+
+        <!-- Variants -->
+        <div class="product-variants">
+          <!-- Size Selector -->
+          <div class="variant-selector" id="size-selector-container">
+            <span class="variant-label">Select Size</span>
+            <div class="variant-options" id="size-options">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Color Selector -->
+          <div class="variant-selector" id="color-selector-container">
+            <span class="variant-label">Select Color</span>
+            <div class="variant-options" id="color-options">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantity & Add To Cart -->
+        <div class="add-to-cart-action">
+          <div class="qty-selector">
+            <button class="qty-btn" id="qty-dec">—</button>
+            <input type="number" id="qty-input" value="1" min="1" readonly>
+            <button class="qty-btn" id="qty-inc">+</button>
+          </div>
+          <button class="btn btn-primary btn-lg" id="add-to-cart-btn">Add to Cart</button>
+        </div>
+
+        <div class="product-meta" style="margin-top: var(--space-8); border-top: 1px solid var(--color-border); padding-top: var(--space-4);">
+          <div><strong>Availability:</strong> <span id="product-stock">In Stock</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="related-products-section" style="margin-top: var(--space-16); border-top: 1px solid var(--color-border); padding-top: var(--space-12);">
+      <h2 class="font-heading text-2xl text-center" style="margin-bottom: var(--space-8);">You May Also Like</h2>
+      <div class="product-grid" id="related-products-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-name">MAISON</div>
+        <p class="footer-brand-desc">Luxury fashion for the modern individual.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <div class="footer-links">
+          <a href="shop.html?categoryId=1" class="footer-link">Women</a>
+          <a href="shop.html?categoryId=2" class="footer-link">Men</a>
+          <a href="shop.html?categoryId=3" class="footer-link">Accessories</a>
+          <a href="shop.html?categoryId=4" class="footer-link">Sale</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footer-year">2026</span> MAISON. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/product.js"></script>
+</body>
+</html>
