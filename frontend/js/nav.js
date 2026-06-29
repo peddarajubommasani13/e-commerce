@@ -159,10 +159,16 @@ function initFooter() {
       <div>
         <div class="footer-heading">Account</div>
         <div class="footer-links">
-          <a href="${resolveRoot('pages/login.html')}" class="footer-link">Sign In</a>
-          <a href="${resolveRoot('pages/register.html')}" class="footer-link">Create Account</a>
-          <a href="${resolveRoot('pages/account.html')}" class="footer-link">My Orders</a>
-          <a href="${resolveRoot('pages/cart.html')}" class="footer-link">Cart</a>
+          ${isLoggedIn() ? `
+            <a href="${resolveRoot('pages/account.html')}" class="footer-link">My Account</a>
+            <a href="${resolveRoot('pages/account.html')}" class="footer-link">My Orders</a>
+            <a href="${resolveRoot('pages/cart.html')}" class="footer-link">Cart</a>
+            <a href="#" class="footer-link" onclick="handleFooterLogout(event)">Sign Out</a>
+          ` : `
+            <a href="${resolveRoot('pages/login.html')}" class="footer-link">Sign In</a>
+            <a href="${resolveRoot('pages/register.html')}" class="footer-link">Create Account</a>
+            <a href="${resolveRoot('pages/cart.html')}" class="footer-link">Cart</a>
+          `}
         </div>
       </div>
       <div>
@@ -186,3 +192,11 @@ function initFooter() {
     </div>
   `;
 }
+
+window.handleFooterLogout = function (e) {
+  if (e) e.preventDefault();
+  setAuthToken(null);
+  setAuthUser(null);
+  toastSuccess('You have been logged out.');
+  setTimeout(() => window.location.href = resolveRoot('index.html'), 600);
+};

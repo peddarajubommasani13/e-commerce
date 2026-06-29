@@ -4,6 +4,11 @@
    loading states, navigation guards
    ============================================ */
 
+// Redirect to trailing slash version of /frontend context to fix relative path resolution
+if (window.location.pathname.toLowerCase() === '/frontend') {
+  window.location.replace(window.location.pathname + '/');
+}
+
 /* --- Toast System --- */
 (function initToasts() {
   if (document.getElementById('toast-container')) return;
@@ -134,10 +139,11 @@ function setLoading(element, loading) {
 }
 
 /* --- Navigation Guards --- */
-function requireAuth(redirectTo = '/pages/login.html') {
+function requireAuth(redirectTo = 'pages/login.html') {
   if (!isLoggedIn()) {
+    const resolvedRedirect = resolveRoot(redirectTo);
     const current = encodeURIComponent(window.location.pathname + window.location.search);
-    window.location.href = `${redirectTo}?redirect=${current}`;
+    window.location.href = `${resolvedRedirect}?redirect=${current}`;
     return false;
   }
   return true;
@@ -146,15 +152,15 @@ function requireAuth(redirectTo = '/pages/login.html') {
 function requireAdmin() {
   if (!isLoggedIn() || !isAdmin()) {
     toastError('Admin access required.');
-    window.location.href = '/index.html';
+    window.location.href = resolveRoot('index.html');
     return false;
   }
   return true;
 }
 
-function redirectIfLoggedIn(to = '/index.html') {
+function redirectIfLoggedIn(to = 'index.html') {
   if (isLoggedIn()) {
-    window.location.href = to;
+    window.location.href = resolveRoot(to);
     return true;
   }
   return false;
@@ -218,10 +224,18 @@ function paymentStatusBadge(status) {
 
 /* --- Resolve relative path --- */
 function resolveRoot(path) {
-  const depth = window.location.pathname.split('/').filter(Boolean).length;
-  const prefix = depth <= 1 ? './' : '../'.repeat(depth - 1);
-  return prefix + path;
+  const pathname = window.location.pathname;
+  const pathnameLower = pathname.toLowerCase();
+  const isFrontendCtx = pathnameLower.startsWith('/frontend') || pathnameLower.includes('/frontend/');
+  if (isFrontendCtx) {
+    const match = pathname.match(/\/frontend\/?/i);
+    const prefix = match ? match[0] : '/frontend/';
+    const root = prefix.endsWith('/') ? prefix : prefix + '/';
+    return root + path;
+  }
+  return '/' + path;
 }
+
 
 /* --- Product Card (shared across home, shop, product pages) --- */
 function renderProductCard(p) {
@@ -263,9 +277,7 @@ async function handleQuickAddToCart(productId, productName) {
   if (!isLoggedIn()) {
     toastInfo('Please sign in to add items to your cart.');
     setTimeout(() => {
-      // Navigate preserving relative path depth
-      const loginPath = window.location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
-      window.location.href = loginPath;
+      window.location.href = resolveRoot('pages/login.html');
     }, 1500);
     return;
   }
