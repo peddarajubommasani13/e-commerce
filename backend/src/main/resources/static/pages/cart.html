@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Shopping Cart — MAISON</title>
+  <link rel="stylesheet" href="../css/design-system.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/cart.css" />
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <div class="navbar-logo-mark">M</div>
+        <span class="navbar-logo-text">MAISON</span>
+      </a>
+      <div class="navbar-actions">
+        <a href="shop.html" class="btn btn-ghost btn-sm">Shop</a>
+        <div class="nav-user-menu">
+          <button class="nav-user-btn" id="nav-user-btn">
+            <div class="nav-avatar" id="nav-avatar">U</div>
+            <span id="nav-user-name">Account</span>
+          </button>
+          <div class="nav-dropdown" id="nav-user-dropdown">
+            <a href="account.html" class="nav-dropdown-item">👤 My Account</a>
+            <a href="account.html" class="nav-dropdown-item">📦 My Orders</a>
+            <div class="nav-dropdown-divider"></div>
+            <button class="nav-dropdown-item danger" id="nav-logout-btn">🚪 Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container cart-container">
+    <h1 class="font-heading text-3xl" style="margin-bottom: var(--space-8);">Your Shopping Cart</h1>
+
+    <div id="cart-loader" class="text-center" style="padding: 60px 0;">
+      <span class="spinner"></span>
+    </div>
+
+    <!-- Empty State -->
+    <div id="cart-empty-state" class="empty-state" style="display: none;">
+      <div class="empty-state-icon">🛒</div>
+      <h3>Your Cart is Empty</h3>
+      <p>Look like you haven't added anything to your cart yet.</p>
+      <a href="shop.html" class="btn btn-primary">Start Shopping</a>
+    </div>
+
+    <!-- Cart Layout -->
+    <div id="cart-layout" class="cart-layout-grid" style="display: none;">
+      <!-- Line Items -->
+      <div class="cart-items-panel">
+        <div class="cart-header-labels">
+          <span>Product</span>
+          <span>Price</span>
+          <span>Quantity</span>
+          <span>Total</span>
+        </div>
+        <div class="cart-items-list" id="cart-items-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Order Summary Summary -->
+      <div class="cart-summary-panel">
+        <div class="card" style="padding: var(--space-6);">
+          <h2 class="font-heading text-lg" style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-3);">Order Summary</h2>
+          
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">$0.00</span>
+          </div>
+          <div class="summary-row" id="summary-discount-row">
+            <span>Discount</span>
+            <span class="price-discount" id="summary-discount">-$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span style="color: var(--color-success); font-weight: 600;">Calculated at checkout</span>
+          </div>
+          <div class="divider"></div>
+          <div class="summary-row total-row">
+            <span>Estimated Total</span>
+            <span id="summary-total">$0.00</span>
+          </div>
+
+          <button class="btn btn-primary btn-lg btn-full" id="checkout-btn" style="margin-top: var(--space-6);">Proceed to Checkout</button>
+          
+          <a href="shop.html" class="btn btn-ghost btn-sm btn-full text-center" style="margin-top: var(--space-2);">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span>© 2026 MAISON. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/cart.js"></script>
+</body>
+</html>
