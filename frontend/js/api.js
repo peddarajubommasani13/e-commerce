@@ -4,7 +4,7 @@
    base URL config, error handling
    ============================================ */
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'https://e-commerce-production-7682.up.railway.app/api';
 
 /**
  * Core fetch wrapper that handles:
@@ -95,32 +95,32 @@ function isAdmin() {
 const api = {
   // Auth
   register: (data) => apiFetch('/auth/register', { method: 'POST', body: data }),
-  login:    (data) => apiFetch('/auth/login',    { method: 'POST', body: data }),
-  me:       ()     => apiFetch('/auth/me'),
+  login: (data) => apiFetch('/auth/login', { method: 'POST', body: data }),
+  me: () => apiFetch('/auth/me'),
 
   // Products
   getProducts: (params = {}) => {
     const qs = new URLSearchParams(params).toString();
     return apiFetch(`/products${qs ? '?' + qs : ''}`);
   },
-  getProduct:     (id)  => apiFetch(`/products/${id}`),
-  createProduct:  (data) => apiFetch('/products', { method: 'POST', body: data }),
-  updateProduct:  (id, data) => apiFetch(`/products/${id}`, { method: 'PUT', body: data }),
-  deleteProduct:  (id)  => apiFetch(`/products/${id}`, { method: 'DELETE' }),
+  getProduct: (id) => apiFetch(`/products/${id}`),
+  createProduct: (data) => apiFetch('/products', { method: 'POST', body: data }),
+  updateProduct: (id, data) => apiFetch(`/products/${id}`, { method: 'PUT', body: data }),
+  deleteProduct: (id) => apiFetch(`/products/${id}`, { method: 'DELETE' }),
 
   // Categories
   getCategories: () => apiFetch('/categories'),
 
   // Cart
-  getCart:       ()           => apiFetch('/cart'),
-  addToCart:     (data)       => apiFetch('/cart', { method: 'POST', body: data }),
-  updateCartItem:(id, data)   => apiFetch(`/cart/${id}`, { method: 'PUT', body: data }),
-  removeCartItem:(id)         => apiFetch(`/cart/${id}`, { method: 'DELETE' }),
+  getCart: () => apiFetch('/cart'),
+  addToCart: (data) => apiFetch('/cart', { method: 'POST', body: data }),
+  updateCartItem: (id, data) => apiFetch(`/cart/${id}`, { method: 'PUT', body: data }),
+  removeCartItem: (id) => apiFetch(`/cart/${id}`, { method: 'DELETE' }),
 
   // Orders
-  checkout:      (data)   => apiFetch('/orders/checkout', { method: 'POST', body: data }),
-  getOrders:     ()       => apiFetch('/orders'),
-  getOrder:      (id)     => apiFetch(`/orders/${id}`),
+  checkout: (data) => apiFetch('/orders/checkout', { method: 'POST', body: data }),
+  getOrders: () => apiFetch('/orders'),
+  getOrder: (id) => apiFetch(`/orders/${id}`),
 
   // Admin
   adminGetOrders: (page = 0, size = 20) => apiFetch(`/admin/orders?page=${page}&size=${size}`),

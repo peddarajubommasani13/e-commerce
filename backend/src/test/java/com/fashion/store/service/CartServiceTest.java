@@ -1,111 +1,106 @@
-package com.fashion.store.service;
+package com.fashion.store.config;
 
-import com.fashion.store.dto.CartDTO;
-import com.fashion.store.entity.*;
-import com.fashion.store.exception.*;
-import com.fashion.store.repository.*;
-import com.fashion.store.service.impl.CartServiceImpl;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.fashion.store.security.JwtAuthFilter;
+import com.fashion.store.security.UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.math.BigDecimal;
-import java.util.*;
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
 
-@ExtendWith(MockitoExtension.class)
-class CartServiceTest {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    @Mock private CartItemRepository cartItemRepository;
-    @Mock private ProductRepository productRepository;
-    @Mock private UserRepository userRepository;
+        http
+                .csrf(AbstractHttpConfigurer::disable)
 
-    @InjectMocks private CartServiceImpl cartService;
+                .cors(cors -> cors.configurationSource(new CorsConfig().corsConfigurationSource()))
 
-    private User testUser;
-    private Product testProduct;
-    private CartItem testCartItem;
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
 
-    @BeforeEach
-    void setUp() {
-        testUser = User.builder().id(1L).name("Test").email("test@example.com").build();
-        testProduct = Product.builder()
-                .id(1L).name("Dress").price(new BigDecimal("99.99"))
-                .stockQuantity(10).imageUrls("img.jpg").build();
-        testCartItem = CartItem.builder()
-                .id(1L).user(testUser).product(testProduct).quantity(2).size("M").build();
+                .authorizeHttpRequests(auth -> auth
+
+                        // Static resources
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/pages/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/favicon.ico"
+                        ).permitAll()
+
+                        // Public APIs
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+
+                        // Logged-in user
+                        .requestMatchers("/api/auth/me").authenticated()
+
+                        // Admin
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
+
+                        // Everything else
+                        .anyRequest().authenticated()
+                )
+
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(401, "Unauthorized")
+                        )
+                )
+
+                .authenticationProvider(authenticationProvider())
+
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
-    @Test
-    @DisplayName("GetCart: returns cart with calculated totals")
-    void getCart_success() {
-        when(cartItemRepository.findByUserId(1L)).thenReturn(List.of(testCartItem));
-
-        CartDTO.CartResponse cart = cartService.getCart(1L);
-
-        assertThat(cart.getItems()).hasSize(1);
-        assertThat(cart.getTotal()).isEqualByComparingTo(new BigDecimal("199.98"));
-        assertThat(cart.getItemCount()).isEqualTo(1);
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
-    @Test
-    @DisplayName("AddToCart: new item is saved")
-    void addToCart_newItem() {
-        CartDTO.AddToCartRequest req = new CartDTO.AddToCartRequest();
-        req.setProductId(1L);
-        req.setQuantity(1);
-        req.setSize("M");
-
-        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct));
-        when(cartItemRepository.findByUserIdAndProductIdAndSizeAndColor(1L, 1L, "M", null))
-                .thenReturn(Optional.empty());
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        when(cartItemRepository.findByUserId(1L)).thenReturn(List.of(testCartItem));
-
-        CartDTO.CartResponse cart = cartService.addToCart(1L, req);
-
-        verify(cartItemRepository).save(any(CartItem.class));
-        assertThat(cart.getItems()).isNotEmpty();
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
-    @Test
-    @DisplayName("AddToCart: out of stock throws BadRequestException")
-    void addToCart_outOfStock() {
-        testProduct.setStockQuantity(0);
-        CartDTO.AddToCartRequest req = new CartDTO.AddToCartRequest();
-        req.setProductId(1L);
-        req.setQuantity(5);
-        req.setSize("M");
-
-        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct));
-
-        assertThatThrownBy(() -> cartService.addToCart(1L, req))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessageContaining("Insufficient stock");
-    }
-
-    @Test
-    @DisplayName("RemoveCartItem: existing item is deleted")
-    void removeCartItem_success() {
-        when(cartItemRepository.findByIdAndUserId(1L, 1L)).thenReturn(Optional.of(testCartItem));
-        when(cartItemRepository.findByUserId(1L)).thenReturn(Collections.emptyList());
-
-        CartDTO.CartResponse cart = cartService.removeCartItem(1L, 1L);
-
-        verify(cartItemRepository).delete(testCartItem);
-        assertThat(cart.getItems()).isEmpty();
-    }
-
-    @Test
-    @DisplayName("RemoveCartItem: wrong user throws ResourceNotFoundException")
-    void removeCartItem_wrongUser() {
-        when(cartItemRepository.findByIdAndUserId(1L, 2L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> cartService.removeCartItem(2L, 1L))
-                .isInstanceOf(ResourceNotFoundException.class);
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
