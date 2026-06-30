@@ -4,7 +4,7 @@
    base URL config, error handling
    ============================================ */
 
-const API_BASE = 'https://e-commerce-production-7682.up.railway.app/api';
+const API_BASE = 'http://localhost:8080/api';
 
 /**
  * Core fetch wrapper that handles:
